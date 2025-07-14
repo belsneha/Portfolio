@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [theme, setTheme] = useState('dark');
   const [activeSection, setActiveSection] = useState('hero');
+  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
     // Theme toggle functionality
@@ -106,8 +107,44 @@ function App() {
     };
   }, [theme]);
 
+  // Notification display logic
+  useEffect(() => {
+    if (notification) {
+      const timeout = setTimeout(() => setNotification(null), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [notification]);
+
+  // Handler for the new Download Resume button
+  const handleResumeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    setNotification('For resume, please contact me.');
+  };
+
   return (
     <>
+      {/* Notification */}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '2rem',
+          right: '2rem',
+          background: 'var(--gradient-primary)',
+          color: 'white',
+          padding: '1rem 2rem',
+          borderRadius: '10px',
+          boxShadow: 'var(--shadow-primary)',
+          zIndex: 10000,
+          fontWeight: 600,
+          fontSize: '1.1rem',
+        }}>
+          {notification}
+        </div>
+      )}
       {/* Animated Background */}
       <div className="animated-bg">
         <div className="floating-shapes"></div>
@@ -207,10 +244,10 @@ function App() {
                 </div>
 
                 <div className="hero-actions">
-                  <a className="cta-button primary" href="/SDE_Sneha Belavi Resume (2).pdf" download>
+                  <button className="cta-button primary" onClick={handleResumeClick}>
                     <span>Download Resume</span>
                     <i className="fas fa-download"></i>
-                  </a>
+                  </button>
                   <button className="cta-button secondary">
                     <span>View Projects</span>
                     <i className="fas fa-arrow-right"></i>
@@ -281,7 +318,7 @@ function App() {
                       <p className="location">Hubli</p>
                       <div className="cgpa-display">
                         <span className="cgpa-label">Score:</span>
-                        <span className="cgpa-value">93%</span>
+                        <span className="cgpa-value">95%</span>
                       </div>
                     </div>
 
@@ -294,7 +331,7 @@ function App() {
                       <p className="location">Shirdhan</p>
                       <div className="cgpa-display">
                         <span className="cgpa-label">Score:</span>
-                        <span className="cgpa-value">95.63%</span>
+                        <span className="cgpa-value">95.68%</span>
                       </div>
                     </div>
                   </div>
